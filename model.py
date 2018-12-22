@@ -1,8 +1,6 @@
 # Import useful libraries
-#from sklearn.datasets import make_classification 
 import matplotlib.pyplot as plt
 import numpy as np
-#import mnist
 import tensorflow as tf
 from math import sqrt
 from time import time
@@ -213,55 +211,38 @@ TRAIN_ACCURACY_Nesterow = []
 TEST_ACCURACY_Nesterow = []
 TRAIN_ACCURACY_Adam = []
 TEST_ACCURACY_Adam = []
-for i in range(1):
+for i in range(1000, X_Train.shape[0], 1000):
   # Train on the entire dataset
-  X_train = X_Train[:100, :]
-  y_train = y_Train[:100]
+  X_train = X_Train[:i, :]
+  y_train = y_Train[:i]
   softmax = Softmax()
   time_passed, steps_Gr = softmax.Gradient_Descent(X_train, y_train, learning_rate=0.09, reg=0.01, EPS = 0.1, max_iteration=200)
   acc_train = np.mean(softmax.predict(X_train)==y_train)
   acc_test = np.mean(softmax.predict(X_val)==y_val)
   time_Gradient += time_passed
-  #print('Gradient_Descent Training accuracy', acc_train)
-  #print('Gradient_Descent Validation accuracy', acc_test)
+
   TRAIN_ACCURACY_Gradient.append(acc_train)
   TEST_ACCURACY_Gradient.append(acc_test)
-  #print("Execution time: ", time_passed)
-  #Plot(X_train, y_train, softmax, "gradient descent")
-  #print()
+
   # Train on the entire dataset
   softmax = Softmax()
   time_passed, steps_Nest = softmax.Nesterov_Gradient_Descent(X_train, y_train, learning_rate=0.9, reg=0.01, EPS = 0.1, max_iteration=200)
   acc_train = np.mean(softmax.predict(X_train)==y_train)
   acc_test = np.mean(softmax.predict(X_val)==y_val)
   time_Nesterow += time_passed
-  #print('Nesterov_Gradient_Descent Training accuracy', acc_train)
-  #print('Nesterov_Gradient_Descent Validation accuracy',np.mean(softmax.predict(X_val)==y_val))
+
   TRAIN_ACCURACY_Nesterow.append(acc_train)
   TEST_ACCURACY_Nesterow.append(acc_test)
-  #print("Execution time: ", time_passed)
-  #Plot(X_train, y_train, softmax, "Nesterov")
-  #print()
-  # Train on the entire dataset
 
   softmax = Softmax()
   time_passed, steps_Ad = softmax.Adam(X_train, y_train,reg=0.01, EPS = 0.1, max_iteration=200)
   acc_train = np.mean(softmax.predict(X_train)==y_train)
   acc_test = np.mean(softmax.predict(X_val)==y_val)
   time_Adam += time_passed
-  #print('Adam Training accuracy', acc_train)
-  #print('Adam Validation accuracy', acc_train)
+
   TRAIN_ACCURACY_Adam.append(acc_train)
   TEST_ACCURACY_Adam.append(acc_test)
-  #print("Execution time: ", time_passed)
-  #Plot(X_train, y_train, softmax, "Adam")
-  #print()
-  #softmax = Softmax()
-  #time_passed, steps_Ad = softmax.Conditional_Gradient_Descent(X_train, y_train, reg=0.01, EPS = 0.1, max_iteration=200)
-  #acc_train = np.mean(softmax.predict(X_train)==y_train)
-  #acc_test = np.mean(softmax.predict(X_val)==y_val)
-  #TRAIN_ACCURACY_Adam.append(acc_train)
-  #TEST_ACCURACY_Adam.append(acc_test)
+
 
 gr_s = np.linspace(0, 1, len(steps_Gr))
 Nest_s = np.linspace(0, 1, len(steps_Nest))
